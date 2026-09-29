@@ -8,3 +8,6 @@ coverage/
 !.env.example
 
 /net-commander
+
+.vercel
+.env*.local
