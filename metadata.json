@@ -1,0 +1,6 @@
+{
+  "name": "Victoire Birthday Celebration",
+  "description": "An executive, luxurious 5-phase interactive birthday celebration experience for Anne Victoire featuring custom audio, neon countdown, particle eruption, diagonal photo montage with lens flare, floating scripture, and ambient gold sparkles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Joyeux Anniversaire Victoire | Une Célébration Royale</title>
+  <meta name="description"
+    content="Une célébration interactive d'anniversaire luxueuse et royale pour Sœur Anne Victoire, infirmière d'exception et femme de foi." />
+  <meta property="og:title" content="Joyeux Anniversaire Victoire | Une Célébration Royale" />
+  <meta property="og:description"
+    content="Célébration solennelle et festive pour Sœur Anne Victoire, infirmière dévouée." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Google Fonts: Playfair Display, Inter, Great Vibes, Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Celebration Stylesheet -->
+  <link rel="stylesheet" href="/src/celebration.css" />
+</head>
+
+<body>
+  <!-- Background Canvas for Sparkles, Confetti, and Ambient Floating Stars -->
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Floating Balloons Container (Active in Phase 5) -->
+  <div id="balloons-container" class="balloons-layer" aria-hidden="true"></div>
+
+  <!-- Floating Top Minimal Controls Bar -->
+  <header class="top-nav-bar" id="top-nav" aria-label="Contrôles de la célébration">
+    <div class="nav-left">
+      <span class="nav-monogram">AV</span>
+      <div class="nav-title-group">
+        <span class="nav-brand">Célébration de Victoire</span>
+        <span class="nav-date">30 Septembre · Royauté & Vocation Soignante</span>
+      </div>
+    </div>
+
+    <div class="nav-center-phases">
+      <button type="button" class="phase-pill-btn active" data-phase="1" title="Phase 1: Accueil">1. Accueil</button>
+      <button type="button" class="phase-pill-btn" data-phase="2" title="Phase 2: Décompte">2. Décompte</button>
+      <button type="button" class="phase-pill-btn" data-phase="3" title="Phase 3: Apothéose">3. Apothéose</button>
+      <button type="button" class="phase-pill-btn" data-phase="4" title="Phase 4: Diaporama">4. Diaporama</button>
+      <button type="button" class="phase-pill-btn" data-phase="5" title="Phase 5: Finale">5. Finale</button>
+    </div>
+
+    <div class="nav-right-actions">
+      <button type="button" id="btn-sound-toggle" class="control-btn" title="Activer / désactiver la musique"
+        aria-label="Contrôle audio">
+        <svg class="icon-speaker" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path id="audio-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path id="audio-wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <span id="sound-status-text">Son activé</span>
+      </button>
+
+      <button type="button" id="btn-asset-manager" class="control-btn" title="Gérer et importer des photos de Victoire"
+        aria-label="Photos personnalisées">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        <span>Photos</span>
+      </button>
+
+      <button type="button" id="btn-card-modal" class="control-btn" title="Écrire un doux message"
+        aria-label="Mots d'amour et livre d'or">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+          </path>
+        </svg>
+        <span>Vœux</span>
+      </button>
+
+      <button type="button" id="btn-replay" class="control-btn accent"
+        title="Rejouer toute la célébration depuis le début" aria-label="Rejouer">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="1 4 1 10 7 10"></polyline>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+        <span>Rejouer</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewport Application Stage -->
+  <main id="stage" class="stage-container" role="main">
+
+    <!-- ================================================================= -->
+    <!-- PHASE 1: LE PORTAIL ROYAL D'ACCUEIL                               -->
+    <!-- ================================================================= -->
+    <section id="phase-1-gateway" class="phase-view phase-1 active" aria-label="Portail Royal">
+      <div class="gateway-ambient-backdrop"></div>
+      <div class="gateway-content">
+        <div class="royal-crest" aria-hidden="true">
+          <span class="crest-crown">♔</span>
+          <div class="crest-line"></div>
+          <span class="crest-date">30 SEPTEMBRE · 2026</span>
+          <div class="crest-line"></div>
+        </div>
+
+        <h1 class="gateway-hero-title">
+          <span class="gateway-eyebrow">CÉLÉBRATION DE MA MERVEILLEUSE SŒUR</span>
+          <div
+            style="position: relative; width: 100%; height: 180px; max-width: 800px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+            <canvas id="name-particles-canvas"
+              style="width: 100%; height: 100%; cursor: crosshair; touch-action: none;"></canvas>
+          </div>
+        </h1>
+
+        <p class="gateway-subtitle">
+          Grâce, compassion, vocation soignante et faveur divine éclatante. Une célébration d'exception commence pour
+          vous...
+        </p>
+
+        <!-- Interactive Glowing 3D Gift Box -->
+        <div class="gift-box-wrapper" id="gift-box-trigger" role="button" tabindex="0"
+          aria-label="Ouvrir la surprise de Victoire">
+          <div class="gift-box-glow"></div>
+          <div class="gift-box-3d">
+            <div class="box-lid">
+              <div class="box-ribbon-horizontal"></div>
+              <div class="box-ribbon-vertical"></div>
+              <div class="box-bow">
+                <div class="bow-loop-left"></div>
+                <div class="bow-loop-right"></div>
+                <div class="bow-center"></div>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="box-ribbon-horizontal"></div>
+              <div class="box-ribbon-vertical"></div>
+              <div class="box-shine"></div>
+            </div>
+          </div>
+          <div class="box-shadow-ground"></div>
+        </div>
+
+        <!-- Primary Metallic Action Button -->
+        <button type="button" id="btn-unlock-gateway" class="luxury-gold-btn pulse-glow">
+          <span class="btn-shimmer"></span>
+          <span class="btn-icon">✨</span>
+          <span class="btn-text">Célébration d'Anne Victoire · Démarrage Automatique !</span>
+        </button>
+
+        <div class="gateway-auto-badge">
+          <span>✦ Lancement automatique sur votre écran...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating Tap for Sound Indicator (Shows if browser initially restricts autoplay) -->
+    <div id="audio-prompt-banner" class="audio-prompt-banner hidden" role="button" tabindex="0">
+      <span>🎵 Touchez l'écran pour activer la musique de fête</span>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- PHASE 2: LE DÉCOMPTE NÉON SPECTACULAIRE                           -->
+    <!-- ================================================================= -->
+    <section id="phase-2-countdown" class="phase-view phase-2" aria-label="Décompte Festif">
+      <div class="countdown-radial-glow"></div>
+      <div class="countdown-container">
+        <div class="countdown-aura-ring"></div>
+        <div id="countdown-number" class="countdown-digit" aria-live="polite">3</div>
+        <div class="countdown-tagline">PRÉPAREZ-VOUS POUR L'APOTHÉOSE</div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- PHASE 3: L'APOTHÉOSE ÉTINCELANTE ET LES CONFETTIS                 -->
+    <!-- ================================================================= -->
+    <section id="phase-3-climax" class="phase-view phase-3" aria-label="Apothéose Royale">
+      <div class="climax-inner">
+        <div class="climax-rays" aria-hidden="true"></div>
+        <div class="climax-royal-crown">👑</div>
+        <h2 id="climax-title" class="climax-headline">JOYEUX ANNIVERSAIRE !</h2>
+        <p class="climax-subtext">UN CADEAU D'AMOUR POUR MA SŒUR EXCEPTIONNELLE</p>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- PHASE 4 & 5: DIAPORAMA AUTOMATISÉ, VERSETS ET CHEF-D'ŒUVRE        -->
+    <!-- ================================================================= -->
+    <section id="phase-4-showcase" class="phase-view phase-4" aria-label="Diaporama et Chef-d'œuvre">
+      <div class="showcase-content-grid">
+
+        <!-- Top Header Third: Grand Banner & Crowning Script -->
+        <div class="showcase-header-zone">
+          <div class="header-pre-tag">
+            <span class="calendar-pill">30 · 09 · 2026</span>
+            <span class="header-divider">·</span>
+            <span class="tag-title">UNE ÉTAPE GLORIEUSE</span>
+          </div>
+
+          <h2 class="showcase-birthday-banner">JOYEUX ANNIVERSAIRE</h2>
+
+          <div class="masterpiece-crowning-lockup" id="crowning-signature-wrap">
+            <span class="crowning-honorific">Sœur & Infirmière Dévouée</span>
+            <h1 class="crowning-name" id="crowning-name-text">
+              Anne Victoire
+              <!-- Small Floating Digital Accent +1 -->
+              <span class="plus-one-accent" title="Plus une année de grâce et de santé">+1</span>
+            </h1>
+          </div>
+
+          <!-- Inspirational Verse Ticker Banner in French -->
+          <div class="verse-ticker-container" id="verse-ticker" role="region" aria-live="polite">
+            <div class="verse-quote-mark">“</div>
+            <div class="verse-text-body" id="verse-body">
+              À tes résolutions répondra le succès; sur tes sentiers brillera la lumière.
+            </div>
+            <div class="verse-reference" id="verse-ref">— Job 22:28</div>
+            <div class="verse-progress-indicator">
+              <span class="progress-dot active" data-index="0"></span>
+              <span class="progress-dot" data-index="1"></span>
+              <span class="progress-dot" data-index="2"></span>
+              <span class="progress-dot" data-index="3"></span>
+              <span class="progress-dot" data-index="4"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Two-Thirds: Automated Photo Slideshow & Royal Tribute -->
+        <div class="showcase-collage-zone">
+
+          <!-- Lens Flare Radiating Glow from Behind Active Slide -->
+          <div class="warm-orange-lens-flare" aria-hidden="true"></div>
+
+          <!-- Left / Center Column: Automated Cinematic Slideshow Stage -->
+          <div class="slideshow-theater-wrapper" id="slideshow-container">
+
+            <!-- Slideshow Screen -->
+            <div class="slideshow-viewport" id="slideshow-viewport">
+
+              <!-- Slideshow Timer Progress Bar -->
+              <div class="slideshow-progress-bar-wrap">
+                <div class="slideshow-progress-bar" id="slide-progress-bar"></div>
+              </div>
+
+              <!-- Slide 1: Flyer Royal Bronze & Satin Victoire (Provided Image) -->
+              <div class="celebration-slide active" data-slide-index="0">
+                <div class="slide-image-wrapper">
+                  <div class="slide-ambient-blur"
+                    style="background-image: url('/file_0000000063a881f4a8c43d1030c7727e.png');"></div>
+                  <img id="img-hero" class="slide-img" src="/file_0000000063a881f4a8c43d1030c7727e.png"
+                    alt="Sœur Anne Victoire - Affiche Royale Chocolat, Bronze & Fauteuil"
+                    referrerpolicy="no-referrer" />
+                </div>
+                <div class="slide-caption-overlay">
+                  <div class="slide-tag">01 · ÉLÉGANCE ROYALE & VOCATION SOIGNANTE</div>
+                  <h3 class="slide-title">Sœur Anne Victoire · 30 Septembre</h3>
+                  <p class="slide-desc">Dignité, grâce éclatante et dévouement au service du soin et de la foi.</p>
+                </div>
+              </div>
+
+              <!-- Slide 2: Flyer Tailleur Blanc & Triple Portrait (Provided Image) -->
+              <div class="celebration-slide" data-slide-index="1">
+                <div class="slide-image-wrapper">
+                  <div class="slide-ambient-blur"
+                    style="background-image: url('/file_00000000f6688210b8ccd681f741894e.png');"></div>
+                  <img id="img-profile" class="slide-img" src="/file_00000000f6688210b8ccd681f741894e.png"
+                    alt="Sister Anne Victoire - Tailleur Blanc de Prestige & Pendentif Or"
+                    referrerpolicy="no-referrer" />
+                </div>
+                <div class="slide-caption-overlay">
+                  <div class="slide-tag">02 · PURETÉ, FORCE & BIENVEILLANCE</div>
+                  <h3 class="slide-title">Sister Anne Victoire · Rayonnement</h3>
+                  <p class="slide-desc">Plus de grâce, plus de joie, plus de victoires pour notre héroïne soignante.</p>
+                </div>
+              </div>
+
+              <!-- Slide 3: Flyer Soie Bleue Ciel & Sac Chanel (Provided Image) -->
+              <div class="celebration-slide" data-slide-index="2">
+                <div class="slide-image-wrapper">
+                  <div class="slide-ambient-blur"
+                    style="background-image: url('/file_00000000346c8246b99cf08330ce0937.png');"></div>
+                  <img id="img-fullbody" class="slide-img" src="/file_00000000346c8246b99cf08330ce0937.png"
+                    alt="Anne Victoire - Drapé Bleu Ciel & 30th September 2026" referrerpolicy="no-referrer" />
+                </div>
+                <div class="slide-caption-overlay">
+                  <div class="slide-tag">03 · DOUCEUR & ÉCLAT</div>
+                  <h3 class="slide-title">Happy Birthday Anne Victoire +1</h3>
+                  <p class="slide-desc">Célébration royale dans l'azur et la paix divine.</p>
+                </div>
+              </div>
+
+              <!-- Slide 4: Flyer Déchirure Calendrier Septembre 2026 (Provided Image) -->
+              <div class="celebration-slide" data-slide-index="3">
+                <div class="slide-image-wrapper">
+                  <div class="slide-ambient-blur"
+                    style="background-image: url('/file_0000000073e082109dac65fd82cfe83a.png');"></div>
+                  <img id="img-slide-4" class="slide-img" src="/file_0000000073e082109dac65fd82cfe83a.png"
+                    alt="Victoire - Calendrier Septembre 2026 Le 30" referrerpolicy="no-referrer" />
+                </div>
+                <div class="slide-caption-overlay">
+                  <div class="slide-tag">04 · JOUR DE GLOIRE & SOURIRE DIVIN</div>
+                  <h3 class="slide-title">Le Jour Marquant · 30 Septembre 2026</h3>
+                  <p class="slide-desc">Un sourire radieux qui illumine des vies et témoigne de la faveur céleste.</p>
+                </div>
+              </div>
+
+              <!-- Slide 5: Flyer Blanc & Bleu Esthétique Studio (Provided Image) -->
+              <div class="celebration-slide" data-slide-index="4">
+                <div class="slide-image-wrapper">
+                  <div class="slide-ambient-blur"
+                    style="background-image: url('/file_00000000cc2c8210a26483be504fc71d.png');"></div>
+                  <img id="img-slide-5" class="slide-img" src="/file_00000000cc2c8210a26483be504fc71d.png"
+                    alt="Sister Anne Victoire - Studio Podium Blanc & Bleu" referrerpolicy="no-referrer" />
+                </div>
+                <div class="slide-caption-overlay">
+                  <div class="slide-tag">05 · PRESTIGE & PERSÉVÉRANCE</div>
+                  <h3 class="slide-title">Sister Anne Victoire · Triomphe</h3>
+                  <p class="slide-desc">Couronnée de dignité, honorée pour sa vocation et son amour inconditionnel.</p>
+                </div>
+              </div>
+
+              <!-- Slide Nav Arrows -->
+              <button type="button" class="slide-nav-btn prev" id="btn-slide-prev" title="Image précédente"
+                aria-label="Image précédente">❮</button>
+              <button type="button" class="slide-nav-btn next" id="btn-slide-next" title="Image suivante"
+                aria-label="Image suivante">❯</button>
+
+              <!-- Floating Slide Metadata Bar -->
+              <div class="slide-meta-bar">
+                <div class="slide-status-chip">
+                  <span class="status-pulse-dot"></span>
+                  <span id="slide-play-state">En lecture auto</span>
+                </div>
+                <div class="slide-counter-chip" id="slide-counter">01 / 05</div>
+                <button type="button" class="slide-toggle-play-btn" id="btn-toggle-slide-play"
+                  title="Mettre en pause ou relancer le diaporama" aria-label="Pause ou lecture">
+                  <span id="slide-play-icon">⏸</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Interactive Filmstrip Ribbon with real image thumbnails -->
+            <div class="filmstrip-thumbnail-ribbon" id="filmstrip-ribbon" role="tablist"
+              aria-label="Diapositives photos">
+              <button type="button" class="film-thumb-card active" data-goto-slide="0" role="tab" aria-selected="true"
+                style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('/file_0000000063a881f4a8c43d1030c7727e.png'); background-size: cover; background-position: center;">
+                <span class="thumb-sprocket top"></span>
+                <span class="thumb-num">01</span>
+                <span class="thumb-label">Bronze Royal</span>
+                <span class="thumb-sprocket bottom"></span>
+              </button>
+              <button type="button" class="film-thumb-card" data-goto-slide="1" role="tab" aria-selected="false"
+                style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('/file_00000000f6688210b8ccd681f741894e.png'); background-size: cover; background-position: center;">
+                <span class="thumb-sprocket top"></span>
+                <span class="thumb-num">02</span>
+                <span class="thumb-label">Tailleur Blanc</span>
+                <span class="thumb-sprocket bottom"></span>
+              </button>
+              <button type="button" class="film-thumb-card" data-goto-slide="2" role="tab" aria-selected="false"
+                style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('/file_00000000346c8246b99cf08330ce0937.png'); background-size: cover; background-position: center;">
+                <span class="thumb-sprocket top"></span>
+                <span class="thumb-num">03</span>
+                <span class="thumb-label">Soie Bleue</span>
+                <span class="thumb-sprocket bottom"></span>
+              </button>
+              <button type="button" class="film-thumb-card" data-goto-slide="3" role="tab" aria-selected="false"
+                style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('/file_0000000073e082109dac65fd82cfe83a.png'); background-size: cover; background-position: center;">
+                <span class="thumb-sprocket top"></span>
+                <span class="thumb-num">04</span>
+                <span class="thumb-label">Calendrier 30</span>
+                <span class="thumb-sprocket bottom"></span>
+              </button>
+              <button type="button" class="film-thumb-card" data-goto-slide="4" role="tab" aria-selected="false"
+                style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('/file_00000000cc2c8210a26483be504fc71d.png'); background-size: cover; background-position: center;">
+                <span class="thumb-sprocket top"></span>
+                <span class="thumb-num">05</span>
+                <span class="thumb-label">Studio Azur</span>
+                <span class="thumb-sprocket bottom"></span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Right Column / Side Card: Milestone & Blessings Summary in French -->
+          <aside class="showcase-sidebar-tribute">
+            <div class="tribute-badge-box">
+              <div class="filmstrip-ribbon" aria-hidden="true">
+                <div class="film-perf"></div>
+                <div class="film-cell">✦ BIENVEILLANCE</div>
+                <div class="film-cell">✦ SOINS</div>
+                <div class="film-cell">✦ EXCELLENCE</div>
+                <div class="film-perf"></div>
+              </div>
+
+              <div class="tribute-pillars">
+                <div class="pillar-row">
+                  <span class="pillar-bullet red"></span>
+                  <span class="pillar-text">JOIE</span>
+                </div>
+                <div class="pillar-row">
+                  <span class="pillar-bullet blue"></span>
+                  <span class="pillar-text">SANTÉ</span>
+                </div>
+                <div class="pillar-row">
+                  <span class="pillar-bullet white"></span>
+                  <span class="pillar-text">BÉNÉDICTION</span>
+                </div>
+              </div>
+
+              <div class="tribute-blessing-card">
+                <h4 class="blessing-title">Un mot d'amour pour Toi</h4>
+                <p class="blessing-p">
+                  Que le Seigneur qui t'a appelée à cette noble mission d'apaiser et de soigner comble ta vie de
+                  longévité, d'une santé florissante et d'une joie inépuisable. Tes mains et ton cœur sont une
+                  bénédiction inestimable. Heureux anniversaire !
+                </p>
+                <div class="blessing-signature">
+                  <span>Avec tout notre amour et notre respect,</span>
+                  <strong>Famille, Collègues Soignants & Amis</strong>
+                </div>
+              </div>
+
+              <div class="tribute-actions">
+                <button type="button" id="btn-custom-asset-link" class="mini-gold-btn">
+                  <span>Ajouter / Remplacer des photos</span>
+                </button>
+                <button type="button" id="btn-share-tribute" class="mini-gold-btn secondary">
+                  <span>Copier le lien d'anniversaire</span>
+                </button>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =================================================================== -->
+  <!-- CUSTOM PHOTO ASSET MANAGER MODAL IN FRENCH                          -->
+  <!-- =================================================================== -->
+  <div id="modal-asset-manager" class="modal-overlay" aria-hidden="true" role="dialog"
+    aria-labelledby="modal-asset-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modal-asset-title" class="modal-title">Panneau d'Importation des Photos</h3>
+          <p class="modal-subtitle">Personnalisez le diaporama avec les véritables photos de l'infirmière Victoire.</p>
+        </div>
+        <button type="button" class="modal-close-btn" data-close-modal
+          aria-label="Fermer la boîte de dialogue">✕</button>
+      </div>
+
+      <div class="modal-body asset-grid">
+        <!-- Slot 1 -->
+        <div class="asset-slot-card" data-slot="hero">
+          <div class="slot-header">
+            <span class="slot-name">1. hero-image.jpg</span>
+            <span class="slot-spec">Portrait principal · Élégance & Vocation</span>
+          </div>
+          <div class="slot-dropzone" id="drop-hero">
+            <div class="drop-preview" id="preview-hero"></div>
+            <p class="drop-text">Glissez-déposez la photo ici ou</p>
+            <label class="drop-upload-label">
+              <span>Parcourir</span>
+              <input type="file" accept="image/*" class="file-input" data-target="hero" />
+            </label>
+            <input type="text" class="url-input" placeholder="Ou collez l'URL de l'image" data-url-target="hero" />
+          </div>
+        </div>
+
+        <!-- Slot 2 -->
+        <div class="asset-slot-card" data-slot="profile">
+          <div class="slot-header">
+            <span class="slot-name">2. profile-portrait.jpg</span>
+            <span class="slot-spec">Regard de profil · Bienveillance & Soin</span>
+          </div>
+          <div class="slot-dropzone" id="drop-profile">
+            <div class="drop-preview" id="preview-profile"></div>
+            <p class="drop-text">Glissez-déposez la photo ici ou</p>
+            <label class="drop-upload-label">
+              <span>Parcourir</span>
+              <input type="file" accept="image/*" class="file-input" data-target="profile" />
+            </label>
+            <input type="text" class="url-input" placeholder="Ou collez l'URL de l'image" data-url-target="profile" />
+          </div>
+        </div>
+
+        <!-- Slot 3 -->
+        <div class="asset-slot-card" data-slot="fullbody">
+          <div class="slot-header">
+            <span class="slot-name">3. full-body-portrait.jpg</span>
+            <span class="slot-spec">En fauteuil royal · Repos & Distinction</span>
+          </div>
+          <div class="slot-dropzone" id="drop-fullbody">
+            <div class="drop-preview" id="preview-fullbody"></div>
+            <p class="drop-text">Glissez-déposez la photo ici ou</p>
+            <label class="drop-upload-label">
+              <span>Parcourir</span>
+              <input type="file" accept="image/*" class="file-input" data-target="fullbody" />
+            </label>
+            <input type="text" class="url-input" placeholder="Ou collez l'URL de l'image" data-url-target="fullbody" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="btn-reset-assets" class="modal-secondary-btn">Réinitialiser les illustrations</button>
+        <button type="button" class="modal-primary-btn" data-close-modal>Appliquer & Voir le diaporama</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- PERSONAL BIRTHDAY TRIBUTE & CARD WRITER MODAL IN FRENCH             -->
+  <!-- =================================================================== -->
+  <div id="modal-tribute" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="modal-tribute-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modal-tribute-title" class="modal-title">Livre d'Or & Vœux pour Victoire</h3>
+          <p class="modal-subtitle">Rédigez un mot affectueux ou une bénédiction pour notre chère sœur.</p>
+        </div>
+        <button type="button" class="modal-close-btn" data-close-modal
+          aria-label="Fermer la boîte de dialogue">✕</button>
+      </div>
+
+      <div class="modal-body tribute-form">
+        <div class="form-group">
+          <label for="tribute-sender-name">Votre nom / Équipe soignante / Famille</label>
+          <input type="text" id="tribute-sender-name" value="Famille, Collègues Soignants & Amis"
+            placeholder="ex: Docteur Laurent & Équipe Hospitalière" />
+        </div>
+
+        <div class="form-group">
+          <label for="tribute-message-text">Votre prière ou vœu d'anniversaire</label>
+          <textarea id="tribute-message-text"
+            rows="4">Que le Dieu de paix et de guérison bénisse abondamment tes mains, ton cœur et ta précieuse vocation. Merci pour ta tendresse auprès des patients et ta lumière constante. Joyeux Anniversaire Sœur Anne Victoire !</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="tribute-scripture-select">Choisir un verset inspirant</label>
+          <select id="tribute-scripture-select">
+            <option value="Job 22:28">Job 22:28 — À tes résolutions répondra le succès; sur tes sentiers brillera la
+              lumière.</option>
+            <option value="Sophonie 3:17">Sophonie 3:17 — L'Éternel, ton Dieu, est au milieu de toi, comme un héros qui
+              sauve...</option>
+            <option value="Jérémie 29:11">Jérémie 29:11 — Car je connais les projets que j'ai formés sur vous, projets
+              de paix et non de malheur...</option>
+            <option value="Nombres 6:24-26">Nombres 6:24-26 — Que l'Éternel te bénisse et te garde; qu'il fasse luire sa
+              face sur toi...</option>
+            <option value="Proverbes 31:25">Proverbes 31:25 — La force et la dignité sont sa parure, et elle sourit à
+              l'avenir...</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="btn-print-tribute" class="modal-secondary-btn">Imprimer l'affiche souvenir</button>
+        <button type="button" id="btn-save-tribute" class="modal-primary-btn">Enregistrer le message</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Native Vanilla JavaScript Application Module -->
+  <script type="module" src="/src/celebration.ts"></script>
+</body>
+
+</html>
